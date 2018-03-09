@@ -7,9 +7,6 @@ const SuccessButton = Component.extend({
   classNames: ['btn', 'btn-primary'],
   type: "button",
   */
-  click(){
-    return this.get('onClick')();
-  }
 });
 
 SuccessButton.reopenClass({
