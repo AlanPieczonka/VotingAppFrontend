@@ -2,16 +2,6 @@
   <h3 class="text-center">/join route</h3>
 </div>
 <div class="container">
-  <form>
-    {{#x-form as |f|}}
-      {{f.email 'Initial value' 'Email'}}
-      {{f.password 'Initial password' 'Password'}}
-      {{f.password 'Initial password confirmation' 'Password confirmation'}}
-      {{#x-button as |b|}}
-        {{b.success 'Join'}}
-        {{b.warning 'Clear form'}}
-      {{/x-button}}
-    {{/x-form}}
-  </form>
+    {{user-forms/join}}
 </div>
 {{outlet}}
