@@ -2,7 +2,7 @@
     {{f.email 'Initial value' 'Email'}}
     {{f.password 'Initial password' 'Password'}}
       {{#x-button as |b|}}
-        {{b.success 'Login'}}
-        {{b.warning 'Clear form'}}
+        {{b.success 'Login' onClick=(action "authenticate")}}
+        {{b.warning 'Clear form' onClick=(action "clearForm")}}
       {{/x-button}}
 {{/x-form}}
