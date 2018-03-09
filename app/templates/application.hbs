@@ -22,17 +22,5 @@
 <div>
   <h1 class="text-center">Voting App</h1>
 </div>
-<div class="container">
-  <form>
-    {{#x-form as |f|}}
-      {{f.email 'Initial value' 'Email'}}
-      {{f.password 'Initial password' 'Password'}}
-      {{f.password 'Initial password confirmation' 'Password confirmation'}}
-      {{#x-button as |b|}}
-        {{b.success 'Join'}}
-        {{b.warning 'Clear form'}}
-      {{/x-button}}
-    {{/x-form}}
-  </form>
-</div>
+
 {{outlet}}
