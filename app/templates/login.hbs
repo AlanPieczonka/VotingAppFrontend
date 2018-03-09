@@ -1,4 +1,16 @@
 <div>
   <h3 class="text-center">/login route</h3>
 </div>
+<div class="container">
+  <form>
+    {{#x-form as |f|}}
+      {{f.email 'Initial value' 'Email'}}
+      {{f.password 'Initial password' 'Password'}}
+      {{#x-button as |b|}}
+        {{b.success 'Login'}}
+        {{b.warning 'Clear form'}}
+      {{/x-button}}
+    {{/x-form}}
+  </form>
+</div>
 {{outlet}}
