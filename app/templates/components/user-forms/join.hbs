@@ -1,9 +1,21 @@
 {{#x-form as |f|}}
-    {{f.email 'Initial value' 'Email'}}
-    {{f.password 'Initial password' 'Password'}}
-    {{f.password 'Initial password confirmation' 'Password confirmation'}}
+    {{f.email changeset.email 'Email'}}
+    {{f.password changeset.password 'Password'}}
+    {{f.password changeset.password_confirmation 'Password confirmation'}}
       {{#x-button as |b|}}
-        {{b.success 'Join'}}
-        {{b.warning 'Clear form'}}
+        {{b.success 'Join' click=(action "join" changeset)}}
+        {{b.warning 'Clear form' click=(action "clearForm" changeset)}}
       {{/x-button}}
+        {{#if changeset.isInvalid}}
+    <div style="margin-top: 10px;" class="alert alert-danger" role="alert">
+      There are errors in your form
+    </div>
+    <ul class="list-group">
+      {{#each changeset.errors as |error|}}
+        {{#each error.validation as |validation|}}
+          <li class="list-group-item">{{validation}}</li>
+        {{/each}}
+      {{/each}}
+    </ul>
+  {{/if}}
 {{/x-form}}
