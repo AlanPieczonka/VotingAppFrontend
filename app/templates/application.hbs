@@ -22,4 +22,11 @@
 <div>
   <h1 class="text-center">Voting App</h1>
 </div>
+<div class="container">
+  <form>
+    {{#x-form as |f|}}
+      {{f.email 'Initial value' 'Email'}}
+    {{/x-form}}
+  </form>
+</div>
 {{outlet}}
