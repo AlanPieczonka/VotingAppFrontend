@@ -1,22 +1,11 @@
 {{#x-form as |f|}}
     {{f.email changeset.email 'Email'}}
     {{f.password changeset.password 'Password'}}
-      {{#x-button as |b|}}
-        {{b.success 'Login' click=(action "authenticate" changeset)}}
-        {{b.warning 'Clear form' click=(action "clearForm" changeset)}}
-      {{/x-button}}
-
-  {{#if changeset.isInvalid}}
-    <div style="margin-top: 10px;" class="alert alert-danger" role="alert">
-      There are errors in your form
-    </div>
-    <ul class="list-group">
-      {{#each changeset.errors as |error|}}
-        {{#each error.validation as |validation|}}
-          <li class="list-group-item">{{validation}}</li>
-        {{/each}}
-      {{/each}}
-    </ul>
-  {{/if}}
-
+    {{#x-button as |b|}}
+      {{b.success 'Login' click=(action "authenticate" changeset)}}
+      {{b.warning 'Clear form' click=(action "clearForm" changeset)}}
+    {{/x-button}}
+    {{#if changeset.isInvalid}}
+      {{user-errors/changeset changeset.errors}}
+    {{/if}}
 {{/x-form}}

@@ -1,0 +1,11 @@
+<div style="margin-top: 10px;" class="alert alert-danger" role="alert">
+    There are errors in your form
+</div>
+<ul class="list-group">
+  {{#each errors as |error|}}
+      {{#each error.validation as |validation|}}
+          <li class="list-group-item">{{validation}}</li>
+      {{/each}}
+  {{/each}}
+</ul>
+{{yield}}
