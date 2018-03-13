@@ -3,7 +3,7 @@ import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
-function isBlank(object) {
+const isBlank = object => {
   // to refactor
   let isBlank = false;
   [object.get('email'), object.get('password')].forEach(value => {
@@ -12,6 +12,20 @@ function isBlank(object) {
     }
   });
   return isBlank;
+}
+
+const postData = async (source, object) => { 
+  let response = await fetch(source, {
+    body: JSON.stringify(object),
+    headers: {
+      'Accept': 'application/json',
+      'content-type': 'application/json'
+    },
+    method: 'POST'
+  });
+  let data = await response.json();
+
+  return data;
 }
 
 export default Component.extend({
@@ -37,16 +51,9 @@ export default Component.extend({
           password: changeset.get('password'),
           password_registration: changeset.get('password_registration'),
         };
-        fetch('http://localhost:3000/auth', {
-          body: JSON.stringify(user),
-          headers: {
-            'Accept': 'application/json',
-            'content-type': 'application/json'
-          },
-          method: 'POST', // *GET, PUT, DELETE, etc.
-        })
-        .then((response) => console.log(response))
-        .fetch((error) => console.error(error));
+        postData('http://localhost:3000/auth', user)
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
       } else {
         console.log('Changeset is not valid, we cannot register the user');
       }
