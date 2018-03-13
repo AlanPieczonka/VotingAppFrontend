@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
+import { set } from '@ember/object';
 
 const isBlank = object => {
   // to refactor
@@ -52,7 +53,12 @@ export default Component.extend({
           password_registration: changeset.get('password_registration'),
         };
         postData('http://localhost:3000/auth', user)
-        .then(data => console.log(data))
+        .then((data) => {
+          data.status == 'success' 
+          ? set(this, 'responseMessage', `Your Account has been created. You can easily log in, ${data.data.email}`)
+          : set(this, 'responseMessage', `There is a problem: ${data.errors.full_messages[0] || "we can't define the problem"}`);
+          this.actions.clearForm(changeset);           
+        })
         .catch(err => console.error(err));
       } else {
         console.log('Changeset is not valid, we cannot register the user');

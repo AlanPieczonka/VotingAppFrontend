@@ -1,4 +1,9 @@
 {{#x-form as |f|}}
+    {{#if responseMessage}}
+    <div style="margin-top: 10px;" class="alert alert-success" role="alert">
+        {{responseMessage}}
+    </div>    
+    {{/if}}
     {{f.email changeset.email 'Email'}}
     {{f.password changeset.password 'Password'}}
     {{f.password changeset.password_confirmation 'Password confirmation'}}
