@@ -47,21 +47,34 @@ export default Component.extend({
   actions: {
     join(changeset) {
       if (changeset.get('isValid') && !isBlank(changeset)) {
+
         const user = {
           email: changeset.get('email'),
           password: changeset.get('password'),
           password_registration: changeset.get('password_registration'),
         };
+        
         postData('http://localhost:3000/auth', user)
         .then((data) => {
-          data.status == 'success' 
-          ? set(this, 'responseMessage', `Your Account has been created. You can easily log in, ${data.data.email}`)
-          : set(this, 'responseMessage', `There is a problem: ${data.errors.full_messages[0] || "we can't define the problem"}`);
+         
+          if(data.status == 'success'){
+            set(this, 'responseMessage', `Your Account has been created. You can easily log in, ${data.data.email}`);
+            set(this, 'isSuccess', true);
+          } else {
+            set(this, 'responseMessage', `There has been an error: ${data.errors.full_messages[0] || "we cannot define the problem"}`);
+            set(this, 'isSuccess', false);
+          }
+
           this.actions.clearForm(changeset);           
         })
-        .catch(err => console.error(err));
+        .catch(() => {
+          set(this, 'responseMessage', 'There has been an unusual error. Please try again');
+          set(this, 'isSuccess', false);
+          this.actions.clearForm(changeset);
+        });
       } else {
-        console.log('Changeset is not valid, we cannot register the user');
+        set(this, 'responseMessage', 'Your data is not valid');
+        set(this, 'isSuccess', false);
       }
     },
     clearForm(changeset) {
