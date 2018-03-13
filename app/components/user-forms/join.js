@@ -3,16 +3,10 @@ import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
-function isBlank(object) {
-  // to refactor
-  let isBlank = false;
-  [object.get('email'), object.get('password')].forEach(value => {
-    if (value == '') {
-      isBlank = true;
-    }
-  });
-  return isBlank;
-}
+import { set } from '@ember/object';
+
+import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
+import { postData } from '../../javascript-helpers/network';
 
 export default Component.extend({
   tagName: 'form',
@@ -31,24 +25,35 @@ export default Component.extend({
   },
   actions: {
     join(changeset) {
-      if (changeset.get('isValid') && !isBlank(changeset)) {
+      if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password', 'password_confirmation')) {
+
         const user = {
           email: changeset.get('email'),
           password: changeset.get('password'),
           password_registration: changeset.get('password_registration'),
         };
-        fetch('http://localhost:3000/auth', {
-          body: JSON.stringify(user),
-          headers: {
-            'Accept': 'application/json',
-            'content-type': 'application/json'
-          },
-          method: 'POST', // *GET, PUT, DELETE, etc.
+
+        postData('http://localhost:3000/auth', user)
+        .then((data) => {
+         
+          if(data.status == 'success'){
+            set(this, 'responseMessage', `Your Account has been created. You can easily log in, ${data.data.email}`);
+            set(this, 'isSuccess', true);
+          } else {
+            set(this, 'responseMessage', `There has been an error: ${data.errors.full_messages[0] || "we cannot define the problem"}`);
+            set(this, 'isSuccess', false);
+          }
+
+          this.actions.clearForm(changeset);           
         })
-        .then((response) => console.log(response))
-        .fetch((error) => console.error(error));
+        .catch(() => {
+          set(this, 'responseMessage', 'There has been an unusual error. Please try again');
+          set(this, 'isSuccess', false);
+          this.actions.clearForm(changeset);
+        });
       } else {
-        console.log('Changeset is not valid, we cannot register the user');
+        set(this, 'responseMessage', 'Your data is not valid');
+        set(this, 'isSuccess', false);
       }
     },
     clearForm(changeset) {
