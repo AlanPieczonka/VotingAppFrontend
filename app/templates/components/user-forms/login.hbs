@@ -1,4 +1,7 @@
 {{#x-form as |f|}}
+    {{#if responseMessage}} 
+      {{user-responses/universal responseMessage isSuccess}}
+    {{/if}}
     {{f.email changeset.email 'Email'}}
     {{f.password changeset.password 'Password'}}
     {{#x-button as |b|}}
