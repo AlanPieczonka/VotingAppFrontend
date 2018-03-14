@@ -9,7 +9,6 @@ import { set } from '@ember/object';
 import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
 
 export default Component.extend({
-
   session: service('session'),
 
   tagName: 'form',
@@ -29,13 +28,14 @@ export default Component.extend({
   actions: {
     authenticate(changeset) {
       if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password')) {
-        console.log('Changeset is valid, we can authenticate');
-
         let identification = changeset.get('email'),
             password = changeset.get('password');
 
-        this.get('session').authenticate('authenticator:devise', identification, password).catch(err => console.log(err));
-
+        this.get('session').authenticate('authenticator:devise', identification, password)
+        .catch(() => {
+          set(this, 'responseMessage', 'There has been an unusual error. Please try to log in again');
+          set(this, 'isSuccess', false);
+        });
       } else {
         set(this, 'responseMessage', 'Your data is not valid');
         set(this, 'isSuccess', false);
