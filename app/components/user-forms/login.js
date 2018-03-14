@@ -3,16 +3,7 @@ import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
-function isBlank(object) {
-  // to refactor
-  let isBlank = false;
-  [object.get('email'), object.get('password')].forEach(value => {
-    if (value == '') {
-      isBlank = true;
-    }
-  });
-  return isBlank;
-}
+import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
 
 export default Component.extend({
   tagName: 'form',
@@ -31,7 +22,7 @@ export default Component.extend({
   },
   actions: {
     authenticate(changeset) {
-      if (changeset.get('isValid') && !isBlank(changeset)) {
+      if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password')) {
         console.log('Changeset is valid, we can authenticate');
       } else {
         console.log('Changeset is not valid, no authentication');

@@ -1,20 +1,19 @@
-import Component from '@ember/component';
-
+import Component from "@ember/component";
 
 const Universal = Component.extend({
-    tagName: 'div',
+  tagName: "div",
 
-    classNames: ['alert'],
-    classNameBindings: ['isSuccess:alert-success:alert-danger'],
-    isSuccess: true,
-    
-    attributeBindings: ['style', 'role'],
-    style: 'margin-top: 10px;',
-    role: 'alert'
+  classNames: ["alert"],
+  classNameBindings: ["isSuccess:alert-success:alert-danger"],
+  isSuccess: true,
+
+  attributeBindings: ["style", "role"],
+  style: "margin-top: 10px;",
+  role: "alert"
 });
 
 Universal.reopenClass({
-    positionalParams: ['message', 'isSuccess']
+  positionalParams: ["message", "isSuccess"]
 });
 
 export default Universal;
