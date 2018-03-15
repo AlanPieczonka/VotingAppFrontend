@@ -14,6 +14,10 @@
             <li class="nav-item">
                 {{x-button/warning 'Log out' click=(action "invalidateSession")}}
             </li>
+            {{#if currentUser}}
+                <p>Signed in as {{currentUser.user.email}}</p>
+                {{log currentUser.user.email}}
+            {{/if}}
         {{else}}
             <li class="nav-item">
                 {{#link-to "login" class="nav-link"}}Login{{/link-to}}
