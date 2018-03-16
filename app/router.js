@@ -10,6 +10,11 @@ Router.map(function() {
   this.route('join');
   this.route('login');
   this.route('about');
+  this.route('authenticated', function() {
+    this.route('user', { path: 'user/:user_id'}, function() {
+      this.route('edit');
+    });
+  });
 });
 
 export default Router;
