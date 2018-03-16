@@ -32,8 +32,8 @@ export default Component.extend({
             password = changeset.get('password');
 
         this.get('session').authenticate('authenticator:devise', identification, password)
-        .catch(() => {
-          set(this, 'responseMessage', 'There has been an unusual error. Please try to log in again');
+        .catch((error) => {
+          set(this, 'responseMessage', `${error.errors[0] || `There has been an unusual error. Please try to log in again`}`);
           set(this, 'isSuccess', false);
         });
       } else {
