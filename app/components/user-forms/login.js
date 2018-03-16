@@ -3,18 +3,14 @@ import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
-function isBlank(object) {
-  // to refactor
-  let isBlank = false;
-  [object.get('email'), object.get('password')].forEach(value => {
-    if (value == '') {
-      isBlank = true;
-    }
-  });
-  return isBlank;
-}
+import { inject as service } from '@ember/service';
+import { set } from '@ember/object';
+
+import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
 
 export default Component.extend({
+  session: service('session'),
+
   tagName: 'form',
   init() {
     this._super(...arguments);
@@ -31,10 +27,18 @@ export default Component.extend({
   },
   actions: {
     authenticate(changeset) {
-      if (changeset.get('isValid') && !isBlank(changeset)) {
-        console.log('Changeset is valid, we can authenticate');
+      if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password')) {
+        let identification = changeset.get('email'),
+            password = changeset.get('password');
+
+        this.get('session').authenticate('authenticator:devise', identification, password)
+        .catch(() => {
+          set(this, 'responseMessage', 'There has been an unusual error. Please try to log in again');
+          set(this, 'isSuccess', false);
+        });
       } else {
-        console.log('Changeset is not valid, no authentication');
+        set(this, 'responseMessage', 'Your data is not valid');
+        set(this, 'isSuccess', false);
       }
     },
     clearForm(changeset) {
