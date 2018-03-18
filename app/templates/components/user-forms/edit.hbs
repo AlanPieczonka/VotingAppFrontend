@@ -1,0 +1,22 @@
+<fieldset disabled={{isDisabled}}>
+    <div class="form-group">
+        <label for="emailInput">Email</label>
+        {{input value=user.email class="form-control" placeholder="Your email"}}
+    </div>
+    <div class="form-group">
+        <label for="nameInput">Name</label>
+        {{input value=user.name class="form-control" placeholder="Your name"}}
+    </div>
+    <div class="form-group">
+        <label for="nicknameInput">Nickname</label>
+        {{input value=user.nickname class="form-control" placeholder="Your nickname"}}
+    </div>
+    <div class="form-group">
+        <label for="linkToImageInput">Image</label>
+        {{input value=user.image class="form-control" placeholder="Link to your image"}}
+    </div>
+    <div style="width: 200px; height: 215px;">
+        <img src={{user.image}} class="img-fluid">
+    </div>
+</fieldset>
+{{yield}}
