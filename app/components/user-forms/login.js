@@ -4,7 +4,6 @@ import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
 import { inject as service } from '@ember/service';
-import { set } from '@ember/object';
 
 import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
 
@@ -33,12 +32,16 @@ export default Component.extend({
 
         this.get('session').authenticate('authenticator:devise', identification, password)
         .catch((error) => {
-          set(this, 'responseMessage', `${error.errors[0] || `There has been an unusual error. Please try to log in again`}`);
-          set(this, 'isSuccess', false);
+          this.setProperties({
+            responseMessage: error.errors ? error.errors[0] : 'There has been an unusual error. Please try to log in again',
+            isSuccess: false
+          })
         });
       } else {
-        set(this, 'responseMessage', 'Your data is not valid');
-        set(this, 'isSuccess', false);
+        this.setProperties({
+          responseMessage: 'Your data is not valid',
+          isSuccess: false
+        })
       }
     },
     clearForm(changeset) {
