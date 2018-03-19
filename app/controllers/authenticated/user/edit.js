@@ -1,11 +1,33 @@
 import Controller from '@ember/controller';
+import { alias } from '@ember/object/computed';
+
+import { get } from '@ember/object';
 
 export default Controller.extend({
-  actions:{
-    saveChanges(){
-      this.model.save().then(() => {
-          this.transitionToRoute('authenticated.user', this.model);
-      });
+  changeset: alias('model'),
+  actions: {
+    saveChanges() {
+      if (get(this, 'changeset').get('isPristine')) {
+        this.transitionToRoute('authenticated.user', get(this, 'changeset'));
+      } else if (get(this, 'changeset').get('isValid')) {
+        get(this, 'changeset')
+          .save()
+          .then(() => {
+            this.transitionToRoute(
+              'authenticated.user',
+              get(this, 'changeset')
+            );
+          });
+      } else {
+        this.setProperties({
+          responseMessage: 'Your data is not valid',
+          isSuccess: false
+        });
+      }
+    },
+    rollback(changeset) {
+      changeset.rollback();
+      return this.transitionToRoute('authenticated.user', changeset);
     }
   }
 });

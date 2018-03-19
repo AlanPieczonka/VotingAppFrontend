@@ -1,9 +1,13 @@
 <div class="container">
-  {{#user-forms/edit isDisabled=false user=model}}
+  {{#user-forms/edit isDisabled=false user=changeset}}
+    {{#if responseMessage}} 
+      {{user-responses/universal responseMessage isSuccess}}
+    {{/if}}
+    {{#if changeset.isInvalid}}
+      {{user-errors/changeset changeset.errors}}
+    {{/if}}
     {{x-button/success 'Save changes' click=(action "saveChanges")}} 
-    {{#link-to 'authenticated.user' model}}
-      {{x-button/warning 'Cancel'}}
-    {{/link-to}}
+    {{x-button/warning 'Cancel' click=(action "rollback" changeset)}}
   {{/user-forms/edit}}
 </div>
 {{outlet}}
