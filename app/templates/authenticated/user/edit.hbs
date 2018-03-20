@@ -1,27 +1,13 @@
 <div class="container">
-  <form>
-    <fieldset>
-      <div class="form-group">
-        <label for="disabledTextInput">Email</label>
-        {{input value=model.email class="form-control" placeholder="Email input"}}
-      </div>
-      <div class="form-group">
-        <label for="disabledTextInput">Name</label>
-        {{input value=model.name class="form-control" placeholder="Name input"}}
-      </div>
-      <div class="form-group">
-        <label for="disabledTextInput">Nickname</label>
-        {{input value=model.nickname class="form-control" placeholder="Nickname input"}}
-      </div>
-      <div class="form-group">
-        <label for="disabledTextInput">Image</label>
-        {{input value=model.image class="form-control" placeholder="Image input"}}
-      </div>
-      {{x-button/success 'Save changes' click=(action "saveChanges")}} 
-      {{#link-to 'authenticated.user' model}}
-        {{x-button/warning 'Cancel'}}
-      {{/link-to}}
-    </fieldset>
-  </form>
+  {{#user-forms/edit isDisabled=false user=changeset}}
+    {{#if responseMessage}} 
+      {{user-responses/universal responseMessage isSuccess}}
+    {{/if}}
+    {{#if changeset.isInvalid}}
+      {{user-errors/changeset changeset.errors}}
+    {{/if}}
+    {{x-button/success 'Save changes' click=(action "saveChanges")}} 
+    {{x-button/warning 'Cancel' click=(action "rollback" changeset)}}
+  {{/user-forms/edit}}
 </div>
 {{outlet}}
