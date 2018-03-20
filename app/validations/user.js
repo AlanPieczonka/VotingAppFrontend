@@ -19,5 +19,14 @@ export default {
     validatePresence(true),
     validateLength({ min: 6}),
     validateConfirmation({ on: 'password' })
+  ],
+  name: [
+    validateLength({ max: 20 })
+  ],
+  nickname: [
+    validateLength({ max: 20 })
+  ],
+  image: [
+    validateLength({ max: 100 })
   ]
 };
