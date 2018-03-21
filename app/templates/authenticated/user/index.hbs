@@ -3,7 +3,7 @@
     {{#link-to 'authenticated.user.edit' model}}
       {{x-button/success 'Edit'}}
     {{/link-to}}
-    {{x-button/danger 'Delete account'}}
+    {{x-button/danger 'Delete account' click=(action "deleteAccount" model)}}
   {{/user-forms/edit}}
 </div>
 {{outlet}}
