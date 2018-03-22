@@ -1,8 +1,8 @@
 <div class="container">
+  {{#if responseMessage}} 
+    {{user-responses/universal responseMessage isSuccess}}
+  {{/if}}
   {{#user-forms/edit isDisabled=false user=changeset}}
-    {{#if responseMessage}} 
-      {{user-responses/universal responseMessage isSuccess}}
-    {{/if}}
     {{#if changeset.isInvalid}}
       {{user-errors/changeset changeset.errors}}
     {{/if}}

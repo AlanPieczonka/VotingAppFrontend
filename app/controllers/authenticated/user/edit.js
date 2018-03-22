@@ -17,7 +17,13 @@ export default Controller.extend({
               'authenticated.user',
               get(this, 'changeset')
             );
-          });
+          })
+          .catch(() => {
+            this.setProperties({
+              responseMessage: "There has been an error. Please try again later",
+              isSuccess: false
+            })
+          })
       } else {
         this.setProperties({
           responseMessage: 'Your data is not valid',
