@@ -3,7 +3,10 @@
     {{#link-to 'authenticated.user.edit' model}}
       {{x-button/success 'Edit'}}
     {{/link-to}}
-    {{x-button/danger 'Delete account'}}
+    {{#confirm-dialog text="Are you sure you want to delete your account" confirmButton="Yeah, do it!" cancelButton="Noooooo!!!!!" confirmAction=(action
+      "deleteAccount" model)}}
+      {{x-button/danger 'Delete account'}}
+    {{/confirm-dialog}}
   {{/user-forms/edit}}
 </div>
 {{outlet}}
