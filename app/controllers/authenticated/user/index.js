@@ -15,7 +15,13 @@ export default Controller.extend({
           model.save();
         })
         .then(() => this.transitionToRoute('index'))
-        .catch(err => console.error(err)); // TO DO: Inform the user about the problem
+        .catch((err) => {
+          const responseMessage = err.message || "There has been an error, please try again later";
+          this.setProperties({
+            responseMessage,
+            isSuccess: false
+          })
+        });
     },
   },
 });
