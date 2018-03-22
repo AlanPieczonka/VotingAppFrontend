@@ -1,4 +1,7 @@
 <div class="container">
+  {{#if responseMessage}} 
+    {{user-responses/universal responseMessage isSuccess}}
+  {{/if}}
   {{#user-forms/edit isDisabled=true user=model}}
     {{#link-to 'authenticated.user.edit' model}}
       {{x-button/success 'Edit'}}
