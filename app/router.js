@@ -15,6 +15,7 @@ Router.map(function() {
       this.route('edit');
     });
   });
+  this.route('not-found', { path: '/*path' });
 });
 
 export default Router;
