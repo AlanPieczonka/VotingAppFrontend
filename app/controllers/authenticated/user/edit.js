@@ -1,21 +1,19 @@
 import Controller from '@ember/controller';
 import { alias } from '@ember/object/computed';
 
-import { get } from '@ember/object';
-
 export default Controller.extend({
   changeset: alias('model'),
   actions: {
     saveChanges() {
-      if (get(this, 'changeset').get('isPristine')) {
-        this.transitionToRoute('authenticated.user', get(this, 'changeset'));
-      } else if (get(this, 'changeset').get('isValid')) {
-        get(this, 'changeset')
+      if (this.get('changeset').get('isPristine')) {
+        this.transitionToRoute('authenticated.user', this.get('changeset'));
+      } else if (this.get('changeset').get('isValid')) {
+        this.get('changeset')
           .save()
           .then(() => {
             this.transitionToRoute(
               'authenticated.user',
-              get(this, 'changeset')
+              this.get('changeset')
             );
           })
           .catch(() => {

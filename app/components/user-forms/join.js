@@ -3,8 +3,6 @@ import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
-import { set } from '@ember/object';
-
 import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
 import { postData } from '../../javascript-helpers/network';
 
@@ -37,23 +35,30 @@ export default Component.extend({
         .then((data) => {
          
           if(data.status == 'success'){
-            set(this, 'responseMessage', `Your Account has been created. You can easily log in, ${data.data.email}`);
-            set(this, 'isSuccess', true);
+            this.setProperties({
+              responseMessage: `Your Account has been created. You can easily log in, ${data.data.email}`,
+              isSuccess: true
+            })
           } else {
-            set(this, 'responseMessage', `There has been an error: ${data.errors.full_messages[0] || "we cannot define the problem"}`);
-            set(this, 'isSuccess', false);
+            this.setProperties({
+              responseMessage: `There has been an error: ${data.errors.full_messages[0] || "we cannot define the problem"}`,
+              isSuccess: false,              
+            })
           }
-
           this.actions.clearForm(changeset);           
         })
         .catch(() => {
-          set(this, 'responseMessage', 'There has been an unusual error. Please try again');
-          set(this, 'isSuccess', false);
+          this.setProperties({
+            responseMessage: 'There has been an unusual error. Please try again',
+            isSuccess: false 
+          })
           this.actions.clearForm(changeset);
         });
       } else {
-        set(this, 'responseMessage', 'Your data is not valid');
-        set(this, 'isSuccess', false);
+        this.setProperties({
+          responseMessage: 'Your data is not valid',
+          isSuccess: false
+        })
       }
     },
     clearForm(changeset) {
