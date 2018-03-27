@@ -1,24 +1,50 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { expect } from 'chai';
+import { describe, it, beforeEach } from 'mocha';
+import { setupComponentTest } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
+import { find, findAll } from 'ember-native-dom-helpers';
 
-moduleForComponent('user-errors/changeset', 'Integration | Component | user errors/changeset', {
-  integration: true
-});
+const exampleErrors =[
+  {
+    validation: ['validationError0'],
+  },
+  {
+    validation: ['validationError1'],
+  },
+  {
+    validation: ['validationError2'],
+  },
+];
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+describe('|Integration | Component | user-errors/changeset', function() {
+  setupComponentTest('user-errors/changeset', {
+    integration: true,
+  });
+  
+  beforeEach(function(){
+    this.set('errors', exampleErrors);
+  })
 
-  this.render(hbs`{{user-errors/changeset}}`);
+  it('should render', async function(){
+    await this.render(hbs`{{user-errors/changeset}}`);
+    expect(find('.alert-danger')).to.exist;
+    expect(find('.list-group')).to.not.exist;
+  });
 
-  assert.equal(this.$().text().trim(), '');
+  it('should display info message', async function(){
+    await this.render(hbs`{{user-errors/changeset}}`);
+    expect(find('.list-group')).to.not.exist;    
+    expect(find('.alert-danger').textContent.trim()).to.be.equal('There are errors in your form');
+  });
 
-  // Template block usage:
-  this.render(hbs`
-    {{#user-errors/changeset}}
-      template block text
-    {{/user-errors/changeset}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  it('should display errors', async function() {
+    await this.render(hbs`{{user-errors/changeset errors}}`);
+    expect(find('.list-group')).to.exist;
+    expect(find('.list-group li')).to.exist;
+    expect(findAll('.list-group li')).to.be.an('array');
+    expect(findAll('.list-group li')).to.have.lengthOf(3);
+    findAll('.list-group li').forEach((element, index) => {
+      expect(element.textContent.trim()).to.be.equal(`validationError${index}`);
+    });  
+  });
 });
