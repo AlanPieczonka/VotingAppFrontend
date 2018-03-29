@@ -12,8 +12,4 @@ const Universal = Component.extend({
   role: "alert"
 });
 
-Universal.reopenClass({
-  positionalParams: ["message", "isSuccess"]
-});
-
 export default Universal;
