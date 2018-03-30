@@ -1,15 +1,17 @@
 <div class="container">
   {{#if responseMessage}} 
-    {{user-responses/universal responseMessage isSuccess}}
+    {{user-responses/universal message=responseMessage isSuccess=isSuccess}}
   {{/if}}
   {{#user-forms/edit isDisabled=true user=model}}
-    {{#link-to 'authenticated.user.edit' model}}
-      {{x-button/success 'Edit'}}
-    {{/link-to}}
-    {{#confirm-dialog text="Are you sure you want to delete your account" confirmButton="Yeah, do it!" cancelButton="Noooooo!!!!!" confirmAction=(action
-      "deleteAccount" model)}}
-      {{x-button/danger 'Delete account'}}
-    {{/confirm-dialog}}
+    {{#if isAuthorized}}
+      {{#link-to 'authenticated.user.edit' model}}
+        {{x-button/success 'Edit'}}
+      {{/link-to}}
+      {{#confirm-dialog text="Are you sure you want to delete your account" confirmButton="Yeah, do it!" cancelButton="Noooooo!!!!!" confirmAction=(action
+        "deleteAccount" model)}}
+        {{x-button/danger 'Delete account'}}
+      {{/confirm-dialog}}
+    {{/if}}
   {{/user-forms/edit}}
 </div>
 {{outlet}}

@@ -5,46 +5,43 @@ import lookupValidator from 'ember-changeset-validations';
 
 import { inject as service } from '@ember/service';
 
-import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
+import { isEveryValueFilled } from '../../javascript-helpers/validation';
+import { setFailureResponse, setInvalidDataResponse, setNullDataResponse } from '../../javascript-helpers/responses';
 
 export default Component.extend({
-  session: service('session'),
-
   tagName: 'form',
+  
+  session: service('session'),
   init() {
     this._super(...arguments);
-
-    let model = {
-      email: '',
-      password: '',
-    };
     this.changeset = new Changeset(
-      model,
+      {
+        email: '',
+        password: ''
+      },
       lookupValidator(UserValidations),
       UserValidations,
     );
   },
   actions: {
     authenticate(changeset) {
-      if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password')) {
-        let identification = changeset.get('email'),
-            password = changeset.get('password');
+      const credentials = [changeset.get('email'), changeset.get('password')];
 
-        this.get('session').authenticate('authenticator:devise', identification, password)
-        .catch((error) => {
-          this.setProperties({
-            responseMessage: error.errors ? error.errors[0] : 'There has been an unusual error. Please try to log in again',
-            isSuccess: false
-          })
+      if (changeset.get('isValid') && isEveryValueFilled(credentials)) {
+        const identification = credentials[0],
+              password = credentials[1];
+
+        this.get('session')
+        .authenticate('authenticator:devise', identification, password)
+        .catch(() => {
+          setFailureResponse.call(this);
         });
       } else {
-        this.setProperties({
-          responseMessage: 'Your data is not valid',
-          isSuccess: false
-        })
+        setInvalidDataResponse.call(this);
       }
     },
     clearForm(changeset) {
+      setNullDataResponse.call(this);
       return changeset.rollback();
     },
   },
