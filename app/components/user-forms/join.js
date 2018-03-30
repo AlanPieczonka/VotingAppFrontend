@@ -24,7 +24,6 @@ export default Component.extend({
   actions: {
     join(changeset) {
       if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password', 'password_confirmation')) {
-
         const user = {
           email: changeset.get('email'),
           password: changeset.get('password'),
@@ -33,7 +32,6 @@ export default Component.extend({
 
         postData('http://localhost:3000/auth', user)
         .then((data) => {
-         
           if(data.status == 'success'){
             this.setProperties({
               responseMessage: `Your Account has been created. You can easily log in, ${data.data.email}`,

@@ -1,6 +1,6 @@
 {{#x-form as |f|}}
     {{#if responseMessage}} 
-      {{user-responses/universal responseMessage isSuccess}}
+      {{user-responses/universal message=responseMessage isSuccess=isSuccess}}
     {{/if}}
     {{f.email changeset.email 'Email'}}
     {{f.password changeset.password 'Password'}}
