@@ -7,6 +7,7 @@ import { inject as service } from '@ember/service';
 
 export default Route.extend({
   session: service(),
+  notifications: service('notification-messages'),
   model() {
     let model = this.modelFor('authenticated.user'),
         modelID = model.get('id'),
@@ -21,6 +22,10 @@ export default Route.extend({
       );
     } else {
       this.transitionTo('index');
+      this.get('notifications').error('You are not allowed to enter this page', {
+        autoClear: true,
+        clearDuration: 2500
+      });
     }
   },
 });
