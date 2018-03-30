@@ -4,16 +4,20 @@ import { alias } from '@ember/object/computed';
 export default Controller.extend({
   changeset: alias('model'),
   actions: {
-    saveChanges() {
-      if (this.get('changeset').get('isPristine')) {
-        this.transitionToRoute('authenticated.user', this.get('changeset'));
-      } else if (this.get('changeset').get('isValid')) {
-        this.get('changeset')
+    saveChanges(changeset) {
+        const isValid = changeset.get('isValid'),
+              isPristine = changeset.get('isPristine');
+
+      if(isPristine && isValid){
+        return this.transitionToRoute('authenticated.user', changeset);
+      }
+      else if (isValid) {  
+        changeset
           .save()
           .then(() => {
             this.transitionToRoute(
               'authenticated.user',
-              this.get('changeset')
+              changeset
             );
           })
           .catch(() => {
@@ -31,6 +35,10 @@ export default Controller.extend({
     },
     rollback(changeset) {
       changeset.rollback();
+      this.setProperties({
+        responseMessage: null,
+        isSuccess: null
+      });
       return this.transitionToRoute('authenticated.user', changeset);
     }
   }

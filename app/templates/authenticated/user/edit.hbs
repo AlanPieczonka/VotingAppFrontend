@@ -1,12 +1,12 @@
 <div class="container">
   {{#if responseMessage}} 
-    {{user-responses/universal responseMessage isSuccess}}
+    {{user-responses/universal message=responseMessage isSuccess=isSuccess}}
   {{/if}}
   {{#user-forms/edit isDisabled=false user=changeset}}
     {{#if changeset.isInvalid}}
       {{user-errors/changeset changeset.errors}}
     {{/if}}
-    {{x-button/success 'Save changes' click=(action "saveChanges")}} 
+    {{x-button/success 'Save changes' click=(action "saveChanges" changeset)}} 
     {{x-button/warning 'Cancel' click=(action "rollback" changeset)}}
   {{/user-forms/edit}}
 </div>
