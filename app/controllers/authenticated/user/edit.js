@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { alias } from '@ember/object/computed';
+import { setFailureResponse, setInvalidDataResponse, setNullDataResponse } from '../../../javascript-helpers/responses';
 
 export default Controller.extend({
   changeset: alias('model'),
@@ -9,7 +10,7 @@ export default Controller.extend({
               isPristine = changeset.get('isPristine');
 
       if(isPristine && isValid){
-        return this.transitionToRoute('authenticated.user', changeset);
+        this.transitionToRoute('authenticated.user', changeset);
       }
       else if (isValid) {  
         changeset
@@ -21,24 +22,15 @@ export default Controller.extend({
             );
           })
           .catch(() => {
-            this.setProperties({
-              responseMessage: "There has been an error. Please try again later",
-              isSuccess: false
-            })
+            setFailureResponse.call(this);
           })
       } else {
-        this.setProperties({
-          responseMessage: 'Your data is not valid',
-          isSuccess: false
-        });
+        setInvalidDataResponse.call(this);
       }
     },
     rollback(changeset) {
       changeset.rollback();
-      this.setProperties({
-        responseMessage: null,
-        isSuccess: null
-      });
+      setNullDataResponse.call(this);
       return this.transitionToRoute('authenticated.user', changeset);
     }
   }

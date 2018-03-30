@@ -3,60 +3,54 @@ import UserValidations from '../../validations/user';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 
-import { isAnyObjectValueBlank } from '../../javascript-helpers/validation';
+import { isEveryValueFilled } from '../../javascript-helpers/validation';
 import { postData } from '../../javascript-helpers/network';
+import { setSuccessResponse, setFailureResponse, setInvalidDataResponse } from '../../javascript-helpers/responses'; 
+
 
 export default Component.extend({
   tagName: 'form',
   init() {
     this._super(...arguments);
-    let model = {
-      email: '',
-      password: '',
-      password_confirmation: '',
-    };
     this.changeset = new Changeset(
-      model,
+      {
+        email: '',
+        password: '',
+        password_confirmation: '',
+      },
       lookupValidator(UserValidations),
       UserValidations,
     );
   },
   actions: {
     join(changeset) {
-      if (changeset.get('isValid') && !isAnyObjectValueBlank(changeset, 'email', 'password', 'password_confirmation')) {
+      const credentials = [
+        changeset.get('email'), 
+        changeset.get('password'), 
+        changeset.get('password_confirmation')
+      ];
+
+      if (changeset.get('isValid') && isEveryValueFilled(credentials)) {
         const user = {
-          email: changeset.get('email'),
-          password: changeset.get('password'),
-          password_registration: changeset.get('password_registration'),
+          email: credentials[0],
+          password: credentials[1],
+          password_registration: credentials[2],
         };
 
         postData('http://localhost:3000/auth', user)
         .then((data) => {
-          if(data.status == 'success'){
-            this.setProperties({
-              responseMessage: `Your Account has been created. You can easily log in, ${data.data.email}`,
-              isSuccess: true
-            })
-          } else {
-            this.setProperties({
-              responseMessage: `There has been an error: ${data.errors.full_messages[0] || "we cannot define the problem"}`,
-              isSuccess: false,              
-            })
-          }
+          data.status == 'success' ?
+          setSuccessResponse.call(this, data.data.email) :
+          setFailureResponse.call(this, data.errors.full_messages[0]);
+
           this.actions.clearForm(changeset);           
         })
         .catch(() => {
-          this.setProperties({
-            responseMessage: 'There has been an unusual error. Please try again',
-            isSuccess: false 
-          })
+          setFailureResponse.call(this);
           this.actions.clearForm(changeset);
         });
       } else {
-        this.setProperties({
-          responseMessage: 'Your data is not valid',
-          isSuccess: false
-        })
+        setInvalidDataResponse.call(this)
       }
     },
     clearForm(changeset) {

@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { setFailureResponse } from '../../../javascript-helpers/responses';
 
 export default Controller.extend({
   session: service(),
@@ -14,12 +15,8 @@ export default Controller.extend({
           model.save();
         })
         .then(() => this.transitionToRoute('index'))
-        .catch((err) => {
-          const responseMessage = err.message || "There has been an error, please try again later";
-          this.setProperties({
-            responseMessage,
-            isSuccess: false
-          })
+        .catch(() => {
+          setFailureResponse.call(this);
         });
     },
   },
