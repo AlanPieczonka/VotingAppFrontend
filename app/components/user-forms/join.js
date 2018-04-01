@@ -34,7 +34,7 @@ export default Component.extend({
         const user = {
           email: credentials[0],
           password: credentials[1],
-          password_registration: credentials[2],
+          password_confirmation: credentials[2],
         };
 
         postData('http://localhost:3000/auth', user)
