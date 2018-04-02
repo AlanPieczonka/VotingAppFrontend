@@ -7,17 +7,20 @@ import { isEveryValueFilled } from '../../javascript-helpers/validation';
 import { postData } from '../../javascript-helpers/network';
 import { setSuccessResponse, setFailureResponse, setInvalidDataResponse } from '../../javascript-helpers/responses'; 
 
+class SimpleUser {
+  constructor(email = '', password = '', password_confirmation = ''){
+    this.email = email,
+    this.password = password,
+    this.password_confirmation = password_confirmation
+  }
+}
 
 export default Component.extend({
   tagName: 'form',
   init() {
     this._super(...arguments);
     this.changeset = new Changeset(
-      {
-        email: '',
-        password: '',
-        password_confirmation: '',
-      },
+      new SimpleUser(),
       lookupValidator(UserValidations),
       UserValidations,
     );
@@ -31,12 +34,8 @@ export default Component.extend({
       ];
 
       if (changeset.get('isValid') && isEveryValueFilled(credentials)) {
-        const user = {
-          email: credentials[0],
-          password: credentials[1],
-          password_registration: credentials[2],
-        };
 
+        const user = new SimpleUser(...credentials);
         postData('http://localhost:3000/auth', user)
         .then((data) => {
           data.status == 'success' ?
