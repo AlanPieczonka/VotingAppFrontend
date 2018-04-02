@@ -20,15 +20,7 @@
             </li>
             {{/if}}
         {{else}}
-            <li class="nav-item">
-                {{#link-to "login" class="nav-link" }}Login{{/link-to}}
-            </li>
-            <li class="nav-item">
-                {{#link-to "join" class="nav-link" }}Join{{/link-to}}
-            </li>
-            <li class="nav-item">
-                {{#link-to "about" class="nav-link" }}About{{/link-to}}
-            </li>
+            {{user-interface/navbar/unauthenticated}}
         {{/if}}
     </ul>
 </div>
