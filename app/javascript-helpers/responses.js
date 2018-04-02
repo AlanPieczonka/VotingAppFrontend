@@ -7,7 +7,7 @@ function setSuccessResponse(email) {
 
 function setFailureResponse(error = 'We cannot define the problem') {
   return this.setProperties({
-    responseMessage: `There has been an error. ${error}. Please try again later`,
+    responseMessage: `There has been an error. ${error}`,
     isSuccess: false
   });
 }
