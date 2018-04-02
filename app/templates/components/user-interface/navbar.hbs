@@ -8,17 +8,10 @@
             {{#link-to "index" class="nav-link" }}Home{{/link-to}}
         </li>
         {{#if session.isAuthenticated}}
-            <li class="nav-item">
-                {{#link-to 'authenticated.user' currentUser.user class="nav-link" }}Settings{{/link-to}}
-            </li>
-            <li class="nav-item">
-                {{x-button/warning 'Log out' click=(action "invalidateSession")}}
-            </li>
-            {{#if currentUser}}
-             <li class="nav-item">
-                <a class="nav-link">{{currentUser.user.email}}</a>
-            </li>
-            {{/if}}
+            {{user-interface/navbar/authenticated
+              currentUser=currentUser
+              invalidateSession=(action "invalidateSession")
+            }}
         {{else}}
             {{user-interface/navbar/unauthenticated}}
         {{/if}}
