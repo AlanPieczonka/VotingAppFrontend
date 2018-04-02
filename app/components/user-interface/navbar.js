@@ -9,10 +9,8 @@ export default Component.extend({
   currentUser: service('current-user'),
   actions: {
     invalidateSession() {
-      const data = localStorage.getItem('ember_simple_auth-session'); // or just const data = this.get('session')???
-
       return this.get('session')
-        .invalidate(data)
+        .invalidate()
         .catch(() => {
           this.get('notifications').warning(
             'There has been an error. Please try again later',
