@@ -25,16 +25,16 @@ export default Component.extend({
   },
   actions: {
     authenticate(changeset) {
-      const credentials = [changeset.get('email'), changeset.get('password')];
+      const credentials = [
+        changeset.get('email'), 
+        changeset.get('password')
+      ];
 
       if (changeset.get('isValid') && isEveryValueFilled(credentials)) {
-        const identification = credentials[0],
-              password = credentials[1];
-
         this.get('session')
-        .authenticate('authenticator:devise', identification, password)
-        .catch(() => {
-          setFailureResponse.call(this);
+        .authenticate('authenticator:devise', ...credentials)
+        .catch((error) => {
+          setFailureResponse.call(this, error.errors[0]);
         });
       } else {
         setInvalidDataResponse.call(this);

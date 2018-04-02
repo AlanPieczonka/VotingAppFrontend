@@ -2,14 +2,12 @@ import Component from "@ember/component";
 
 const Universal = Component.extend({
   tagName: "div",
-
-  classNames: ["alert"],
+  classNames: ["alert", "margin-top--10"],
   classNameBindings: ["isSuccess:alert-success:alert-danger"],
-  isSuccess: true,
+  attributeBindings: ["role"],
+  role: "alert",
 
-  attributeBindings: ["style", "role"],
-  style: "margin-top: 10px;",
-  role: "alert"
+  isSuccess: true,
 });
 
 export default Universal;

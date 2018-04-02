@@ -59,7 +59,7 @@ export default Devise.extend({
         'uid': data.uid,
         'client': data.client
       };
-
+      
       let requestOptions = {
         url: get(this, "logoutEndpoint"),
         method: "DELETE",

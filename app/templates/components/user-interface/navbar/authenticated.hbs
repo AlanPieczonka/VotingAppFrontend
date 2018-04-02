@@ -1,0 +1,9 @@
+<li class="nav-item">
+    {{#link-to 'authenticated.user' currentUser.user class="nav-link" }}Settings{{/link-to}}
+</li>
+<li class="nav-item">
+    {{x-button/warning 'Log out' click=invalidateSession}}
+</li>
+<li class="nav-item">
+    <a class="nav-link">{{currentUser.user.email}}</a>
+</li>
