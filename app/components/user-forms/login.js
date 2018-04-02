@@ -31,10 +31,8 @@ export default Component.extend({
       ];
 
       if (changeset.get('isValid') && isEveryValueFilled(credentials)) {
-        const [identification, password] = credentials;
-
         this.get('session')
-        .authenticate('authenticator:devise', identification, password)
+        .authenticate('authenticator:devise', ...credentials)
         .catch((error) => {
           setFailureResponse.call(this, error.errors[0]);
         });
