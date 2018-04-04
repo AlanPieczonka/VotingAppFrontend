@@ -14,7 +14,7 @@ const invalidURLs = [
   'https://somestupidwebsite.com'
 ]
 
-describe('Image URL Validator', function() {
+describe('image-url validator', function() {
   it("returns true for valid image URL's ", () => {
     validURLs.forEach(validURL => {
       let validator = validateImageUrl();
@@ -29,8 +29,8 @@ describe('Image URL Validator', function() {
     });
   });
 
-  it("returns message for blank text", () => {
+  it("returns true for blank text", () => {
     let validator = validateImageUrl();
-    expect(validator('_', "")).to.equal("Please enter valid image URL");
+    expect(validator('_', "")).to.equal(true);
   });
 });
