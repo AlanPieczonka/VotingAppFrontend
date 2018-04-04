@@ -2,9 +2,11 @@ import {
   validatePresence,
   validateLength,
   validateFormat,
-  validateConfirmation
+  validateConfirmation,
 } from 'ember-changeset-validations/validators';
- 
+
+import validateImageUrl from '../validators/image-url';
+
 export default {
   email: [
     validatePresence(true),
@@ -27,6 +29,7 @@ export default {
     validateLength({ max: 20 })
   ],
   image: [
-    validateLength({ max: 100 })
+    validateLength({ max: 250 }),
+    validateImageUrl()
   ]
 };
