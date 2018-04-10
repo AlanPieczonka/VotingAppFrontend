@@ -1,0 +1,10 @@
+<div>
+  <h2 class="text-center">Polls</h2>
+  <div class="container">
+    <ul class="list-group">
+      {{#each model as |poll|}}
+       <li class="list-group-item">{{poll.title}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
