@@ -18,6 +18,7 @@ Router.map(function() {
   this.route('not-found', { path: '/*path' });
 
   this.route('error');
+  this.route('poll', { path: 'poll/:poll_id'} );
 });
 
 export default Router;

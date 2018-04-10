@@ -3,7 +3,9 @@
   <div class="container">
     <ul class="list-group">
       {{#each model as |poll|}}
-       <li class="list-group-item">{{poll.title}}</li>
+        {{#link-to 'poll' poll}}
+        <li class="list-group-item">{{poll.title}}</li>
+        {{/link-to}}
       {{/each}}
     </ul>
   </div>
