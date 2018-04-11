@@ -15,10 +15,10 @@ Router.map(function() {
       this.route('edit');
     });
   });
+  this.route('polls', { path: 'polls/:poll_id' });
+  
   this.route('not-found', { path: '/*path' });
-
   this.route('error');
-  this.route('poll', { path: 'poll/:poll_id'} );
 });
 
 export default Router;
