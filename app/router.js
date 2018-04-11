@@ -14,6 +14,10 @@ Router.map(function() {
     this.route('user', { path: 'user/:user_id'}, function() {
       this.route('edit');
     });
+
+    this.route('polls', function() {
+      this.route('new');
+    });
   });
   this.route('polls', { path: 'polls/:poll_id' });
   
